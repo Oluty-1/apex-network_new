@@ -9,7 +9,7 @@ WORKDIR /build
 # Copy the Go source code into the container
 COPY src/go.mod .
 COPY src/ .
-COPY .env .
+# COPY .env .
 
 # Download go dependencies
 RUN go mod download
