@@ -4,7 +4,7 @@ services:
     build:
       context: .
       # dockerfile: Docker-files/app/Dockerfile
-      dockerfile: .
+      dockerfile: ./Dockerfile
     image: oluty/apexapp
     container_name: apexapp
     ports:
