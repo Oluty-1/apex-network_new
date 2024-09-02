@@ -4,11 +4,11 @@ on:
   push:
     branches:
       # - main
-      - CI/CD
+      - Secrets_Management
   pull_request:
     branches:
       # - main
-      - CI/CD
+      - Secrets_Management
 
 env:
   # Credentials for dockerhub
