@@ -4,11 +4,11 @@ on:
   push:
     branches:
       # - main
-      - CI/CD
+      - CI/CD_ECS
   pull_request:
     branches:
       # - main
-      - CI/CD
+      - CI/CD_ECS
 
 env:
   # Credentials for dockerhub
