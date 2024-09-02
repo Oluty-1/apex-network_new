@@ -80,6 +80,7 @@ jobs:
     - name: Register ECS Task Definition
       run: |
         aws ecs register-task-definition \
+          --region ${{ env.AWS_REGION }} \
           --family ${{ env.ECS_TASK_DEFINITION }} \
           --container-definitions "[
             {
@@ -98,6 +99,7 @@ jobs:
     - name: Update ECS Service
       run: |
         aws ecs update-service \
+          --region ${{ env.AWS_REGION }} \
           --cluster ${{ env.ECS_CLUSTER }} \
           --service ${{ env.ECS_SERVICE }} \
           --task-definition ${{ env.ECS_TASK_DEFINITION }}
