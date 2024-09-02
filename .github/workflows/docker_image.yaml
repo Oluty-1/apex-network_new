@@ -4,11 +4,11 @@ on:
   push:
     branches:
       # - main
-      - CI/CD_EBS
+      - CI/CD
   pull_request:
     branches:
       # - main
-      - CI/CD_EBS
+      - CI/CD
 
 env:
   # Credentials for dockerhub
@@ -19,13 +19,18 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   # AWS region
   AWS_REGION: us-east-2
+  # ECS-specific variables
+  ECS_CLUSTER: apex
+  ECS_SERVICE: apexappsvc
+  ECS_TASK_DEFINITION: apexapptask
+  CONTAINER_NAME: apexapp
   # # Environment variables for Docker Compose
   # PORT: ${{ secrets.PORT }}
   # DB_URL: ${{ secrets.DB_URL }}
 
 jobs:
   build:
-    name: "Build, Push, and Deploy Docker Image"
+    name: "Build, Push, and Deploy Docker Image to ECS"
     runs-on: ubuntu-latest
 
     steps:
@@ -68,18 +73,31 @@ jobs:
         docker push ${{ env.DOCKER_HUB_USERNAME }}/apexapp:${{ env.BUILD_NUMBER }}
         docker push ${{ env.DOCKER_HUB_USERNAME }}/apexapp:latest
 
-    - name: Install Elastic Beanstalk CLI
+    - name: Install AWS CLI
       run: |
-        pip install --user awsebcli
+        pip install --user awscli
 
-    - name: Initialize Elastic Beanstalk
+    - name: Register ECS Task Definition
       run: |
-        eb init -p docker apexapp --region ${{ env.AWS_REGION }}
+        aws ecs register-task-definition \
+          --family ${{ env.ECS_TASK_DEFINITION }} \
+          --container-definitions "[
+            {
+              \"name\": \"${{ env.CONTAINER_NAME }}\",
+              \"image\": \"${{ env.DOCKER_HUB_USERNAME }}/apexapp:${{ env.BUILD_NUMBER }}\",
+              \"essential\": true,
+              \"portMappings\": [
+                {
+                  \"containerPort\": 3000,
+                  \"hostPort\": 3000
+                }
+              ]
+            }
+          ]"
 
-    - name: Deploy to Elastic Beanstalk
+    - name: Update ECS Service
       run: |
-        if eb status apex-app-env; then
-          eb deploy apex-app-env
-        else
-          eb create apex-app-env
-        fi
+        aws ecs update-service \
+          --cluster ${{ env.ECS_CLUSTER }} \
+          --service ${{ env.ECS_SERVICE }} \
+          --task-definition ${{ env.ECS_TASK_DEFINITION }}
