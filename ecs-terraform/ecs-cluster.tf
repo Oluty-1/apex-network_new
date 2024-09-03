@@ -1,7 +1,13 @@
-resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "ecs-cluster"
+# ECS Cluster
+resource "aws_ecs_cluster" "apex_cluster" {
+  name = "apex"
+
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
 
   tags = {
-    Name = "ecs-cluster"
+    Name = "apex"
   }
 }

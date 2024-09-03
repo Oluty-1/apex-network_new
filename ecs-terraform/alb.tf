@@ -1,34 +1,24 @@
-resource "aws_lb_target_group" "ecs_tg" {
-  name     = "ecs-tg"
-  port     = 3000
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
-
-  health_check {
-    path                = "/"
-    interval            = 30
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    matcher             = "200"
-  }
+# Application Load Balancer
+resource "aws_lb" "apexapp_alb" {
+  name               = "apexappelbecs"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.apexapp_sg.id]
+  subnets            = data.aws_subnets.default.ids
 
   tags = {
-    Name = "ecs-tg"
+    Name = "apexappelbecs"
   }
 }
 
-resource "aws_lb_listener" "ecs_listener" {
-  load_balancer_arn = aws_lb.ecs_lb.arn
-  port              = "3000"
+# Listener for Application Load Balancer
+resource "aws_lb_listener" "apexapp_http_listener" {
+  load_balancer_arn = aws_lb.apexapp_alb.arn
+  port              = "80"
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.ecs_tg.arn
-  }
-
-  tags = {
-    Name = "ecs-listener"
+    target_group_arn = aws_lb_target_group.apexapp_tg.arn
   }
 }
