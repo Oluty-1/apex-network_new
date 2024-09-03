@@ -4,11 +4,11 @@ on:
   push:
     branches:
       # - main
-      - Secrets_Management
+      # - Secrets_Management
   pull_request:
     branches:
       # - main
-      - Secrets_Management
+      # - Secrets_Management
 
 env:
   # Credentials for dockerhub
@@ -76,34 +76,6 @@ jobs:
     - name: Install AWS CLI
       run: |
         pip install --user awscli
-
-    # - name: Register ECS Task Definition
-    #   run: |
-    #     aws ecs register-task-definition \
-    #       --region ${{ env.AWS_REGION }} \
-    #       --family ${{ env.ECS_TASK_DEFINITION }} \
-    #       --container-definitions "[
-    #         {
-    #           \"name\": \"${{ env.CONTAINER_NAME }}\",
-    #           \"image\": \"${{ env.DOCKER_HUB_USERNAME }}/apexapp:${{ env.BUILD_NUMBER }}\",
-    #           \"essential\": true,
-    #           \"memory\": 512,
-    #           \"portMappings\": [
-    #             {
-    #               \"containerPort\": 3000,
-    #               \"hostPort\": 3000
-    #             }
-    #           ]
-    #         }
-    #       ]"
-
-    # - name: Update ECS Service with New Image
-    #   run: |
-    #     aws ecs update-service \
-    #       --region ${{ env.AWS_REGION }} \
-    #       --cluster ${{ env.ECS_CLUSTER }} \
-    #       --service ${{ env.ECS_SERVICE }} \
-    #       --force-new-deployment
     
     - name: Update ECS Service
       run: |
