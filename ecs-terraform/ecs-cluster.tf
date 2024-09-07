@@ -1,6 +1,6 @@
 # ECS Cluster
 resource "aws_ecs_cluster" "apex_cluster" {
-  name = "apex"
+  name = var.CLUSTER_NAME
 
   setting {
     name  = "containerInsights"
@@ -8,6 +8,6 @@ resource "aws_ecs_cluster" "apex_cluster" {
   }
 
   tags = {
-    Name = "apex"
+    Name = var.CLUSTER_NAME
   }
 }

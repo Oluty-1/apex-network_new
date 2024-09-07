@@ -1,6 +1,6 @@
 # Security Group
 resource "aws_security_group" "apexapp_sg" {
-  name        = "apexappecs-sg"
+  name        = var.SG_NAME
   description = "Security group for ECS tasks in the apexappsvc service"
   vpc_id      = data.aws_vpc.default.id
 
@@ -12,8 +12,8 @@ resource "aws_security_group" "apexapp_sg" {
   }
 
   ingress {
-    from_port   = 3000
-    to_port     = 3000
+    from_port   = var.PORT
+    to_port     = var.PORT
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -26,6 +26,6 @@ resource "aws_security_group" "apexapp_sg" {
   }
 
   tags = {
-    Name = "apexappecs-sg"
+    Name = "var.SG_NAME"
   }
 }

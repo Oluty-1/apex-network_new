@@ -12,22 +12,22 @@ data "aws_subnets" "default" {
 
 # ECS Service
 resource "aws_ecs_service" "apexapp_svc" {
-  name            = "apexappsvc"
-  cluster         = aws_ecs_cluster.apexapp_cluster.id
-  task_definition = "apexapptask:${var.task_revision}"
+  name            = var.SERVICE_NAME
+  cluster         = aws_ecs_cluster.apex_cluster.id
+  task_definition = aws_ecs_task_definition.apexapptask.arn
   desired_count   = 1
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets         = data.aws_subnets.default.ids
-    security_groups = [aws_security_group.apexapp_sg.id]
+    subnets          = data.aws_subnets.default.ids
+    security_groups  = [aws_security_group.apexapp_sg.id]
     assign_public_ip = true
   }
 
   load_balancer {
     target_group_arn = aws_lb_target_group.apexapp_tg.arn
-    container_name   = "apexapp"
-    container_port   = 3000
+    container_name   = var.CONTAINER_NAME
+    container_port   = var.PORT
   }
 
   depends_on = [
@@ -35,6 +35,6 @@ resource "aws_ecs_service" "apexapp_svc" {
   ]
 
   tags = {
-    Name = "apexappsvc"
+    Name = var.SERVICE_NAME
   }
 }

@@ -33,7 +33,7 @@ resource "aws_iam_policy" "ecs_task_secrets_policy" {
         Action = [
           "secretsmanager:GetSecretValue"
         ]
-        Effect   = "Allow"
+        Effect = "Allow"
         Resource = [
           "arn:aws:secretsmanager:us-east-2:302225372317:secret:ApexSecrets_DB_URL-IYnCpn",
           "arn:aws:secretsmanager:us-east-2:302225372317:secret:ApexSecrets-tRFSbw"

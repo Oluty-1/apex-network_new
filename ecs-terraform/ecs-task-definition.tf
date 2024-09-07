@@ -1,24 +1,24 @@
 resource "aws_ecs_task_definition" "apexapptask" {
-  family                   = "apexapptask"
+  family                   = var.TASK_FAMILY
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "1024"
-  memory                   = "2048"
+  memory                   = var.MEMORY
   task_role_arn            = "arn:aws:iam::302225372317:role/ecsTaskExecutionRole"
   execution_role_arn       = "arn:aws:iam::302225372317:role/ecsTaskExecutionRole"
 
   container_definitions = jsonencode([
     {
-      name        = "apexapp"
-      image       = "oluty/apexapp:latest"
-      cpu         = 0
-      essential   = true
+      name      = var.CONTAINER_NAME
+      image     = var.DOCKER_IMAGE
+      cpu       = 0
+      essential = true
 
       portMappings = [
         {
           name          = "apexapp-3000-tcp"
-          containerPort = 3000
-          hostPort      = 3000
+          containerPort = var.PORT
+          hostPort      = var.PORT
           protocol      = "tcp"
           appProtocol   = "http"
         }
@@ -27,11 +27,11 @@ resource "aws_ecs_task_definition" "apexapptask" {
       secrets = [
         {
           name      = "DB_URL"
-          valueFrom = "arn:aws:secretsmanager:us-east-2:302225372317:secret:ApexSecrets_DB_URL-IYnCpn"
+          valueFrom = var.DB_URL_SECRET
         },
         {
           name      = "PORT"
-          valueFrom = "arn:aws:secretsmanager:us-east-2:302225372317:secret:ApexSecrets-tRFSbw"
+          valueFrom = var.PORT_SECRET
         }
       ]
 
@@ -42,19 +42,19 @@ resource "aws_ecs_task_definition" "apexapptask" {
           "mode"                  = "non-blocking"
           "awslogs-create-group"  = "true"
           "max-buffer-size"       = "25m"
-          "awslogs-region"        = "us-east-2"
+          "awslogs-region"        = var.REGION
           "awslogs-stream-prefix" = "ecs"
         }
       }
 
-      environment        = []
-      mountPoints        = []
-      volumesFrom        = []
-      systemControls     = []
+      environment    = []
+      mountPoints    = []
+      volumesFrom    = []
+      systemControls = []
     }
   ])
 
   tags = {
-    Name = "apexapptask"
+    Name = var.TASK_FAMILY
   }
 }

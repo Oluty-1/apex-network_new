@@ -1,13 +1,13 @@
 # Application Load Balancer
 resource "aws_lb" "apexapp_alb" {
-  name               = "apexappelbecs"
+  name               = var.ALB_NAME
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.apexapp_sg.id]
   subnets            = data.aws_subnets.default.ids
 
   tags = {
-    Name = "apexappelbecs"
+    Name = var.ALB_NAME
   }
 }
 

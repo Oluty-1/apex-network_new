@@ -1,6 +1,6 @@
 resource "aws_lb_target_group" "apexapp_tg" {
-  name        = "apexecstg"
-  port        = 3000
+  name        = var.TG_NAME
+  port        = var.PORT
   protocol    = "HTTP"
   vpc_id      = data.aws_vpc.default.id
   target_type = "ip"
@@ -17,6 +17,6 @@ resource "aws_lb_target_group" "apexapp_tg" {
   deregistration_delay = 300
 
   tags = {
-    Name = "apexecstg"
+    Name = var.TG_NAME
   }
 }
