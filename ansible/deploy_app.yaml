@@ -273,8 +273,14 @@
     - name: Change directory to the project directory
       ansible.builtin.shell: cd /home/ubuntu/apex
 
+    # - name: Retrieve secrets from AWS Secrets Manager
+    #   community.aws.aws_secret:
+    #     name: "{{ apex_secrets }}"
+    #     region: "{{ region }}"
+    #   register: retrieved_secrets
+          
     - name: Retrieve secrets from AWS Secrets Manager
-      community.aws.aws_secret:
+      community.aws.aws_secret_info:
         name: "{{ apex_secrets }}"
         region: "{{ region }}"
       register: retrieved_secrets
