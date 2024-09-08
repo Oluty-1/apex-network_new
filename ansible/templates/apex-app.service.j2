@@ -1,0 +1,15 @@
+[Unit]
+Description=Apex Network Go Application
+After=network.target
+
+[Service]
+ExecStart=/home/ubuntu/apex/apex-app
+WorkingDirectory=/home/ubuntu/apex
+User=ubuntu
+Group=ubuntu
+Environment="PORT={{ port }}"
+Environment="DB_URL={{ db_url }}"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
