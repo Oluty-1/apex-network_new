@@ -1,0 +1,45 @@
+---
+- name: Make the script executable and run it
+  hosts: myserver
+  # become: yes
+  tasks:
+    - name: Ensure python3-venv is installed
+      apt:
+        name: python3-venv
+        state: present
+
+    - name: Create Python virtual environment
+      ansible.builtin.shell: python3 -m venv /home/tayo/myvenv
+      args:
+        creates: /home/tayo/myvenv/bin/activate
+
+    - name: Install Ansible in the virtual environment
+      ansible.builtin.shell: |
+        source /home/tayo/myvenv/bin/activate
+        pip install ansible
+      args:
+        executable: /bin/bash
+
+    - name: Install boto3 and botocore in the virtual environment
+      ansible.builtin.shell: |
+        source /home/tayo/myvenv/bin/activate
+        pip install boto3 botocore
+      args:
+        executable: /bin/bash
+
+    - name: Install amazon.aws collection
+      ansible.builtin.shell: |
+        source /home/tayo/myvenv/bin/activate
+        ansible-galaxy collection install amazon.aws
+      args:
+        executable: /bin/bash
+
+    - name: Ensure the script is executable
+      file:
+        path: ./run_deploy.sh
+        mode: '0755'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+    
+    - name: Run the script
+      command: ./run_deploy.sh

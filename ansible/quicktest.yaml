@@ -1,0 +1,46 @@
+---
+- name: Setup virtual environment and install amazon.aws collection
+  hosts: myserver
+  gather_facts: false
+
+  tasks:
+    # - name: Ensure python3-venv is installed
+    #   apt:
+    #     name: python3-venv
+    #     state: present
+
+    # - name: Create Python virtual environment
+    #   ansible.builtin.command: python3 -m venv {{ venv_path }}
+    #   args:
+    #     creates: "{{ venv_path }}/bin/activate"
+
+    # - name: Install Ansible in the virtual environment
+    #   ansible.builtin.pip:
+    #     name: ansible
+    #     virtualenv: "{{ venv_path }}"
+
+    # - name: Install boto3 and botocore in the virtual environment
+    #   ansible.builtin.pip:
+    #     name:
+    #       - boto3
+    #       - botocore
+    #     virtualenv: "{{ venv_path }}"
+
+    # - name: Install amazon.aws collection
+    #   ansible.builtin.command: "{{ venv_path }}/bin/ansible-galaxy collection install amazon.aws"
+
+- name: Setup ec2 instance
+  hosts: localhost
+  gather_facts: False
+  # vars:
+  #   venv_path: /home/tayo/myvenv  # Define venv_path here again
+  #   ansible_python_interpreter: "{{ venv_path }}/bin/python"
+
+  tasks:
+    - name: Retrieve secrets from AWS Secrets Manager
+      set_fact:
+        retrieved_secrets: "{{ lookup('amazon.aws.aws_secret', apex_secrets, region=region) | from_json }}"
+
+    - name: Print retrieved secrets
+      debug:
+        var: retrieved_secrets
