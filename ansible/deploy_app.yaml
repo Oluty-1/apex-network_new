@@ -177,33 +177,6 @@
         state: present
         update_cache: yes
 
-    # - name: Add Docker GPG key
-    #   apt_key:
-    #     url: https://download.docker.com/linux/ubuntu/gpg
-    #     state: present
-
-    # - name: Add Docker repository
-    #   apt_repository:
-    #     repo: deb https://download.docker.com/linux/ubuntu focal stable
-    #     state: present
-
-    # - name: Install Docker
-    #   apt:
-    #     name: docker-ce
-    #     state: present
-
-    # - name: Ensure Docker service is started
-    #   service:
-    #     name: docker
-    #     state: started
-    #     enabled: yes
-
-    # - name: Add Ubuntu user to Docker group
-    #   user:
-    #     name: ubuntu
-    #     groups: docker
-    #     append: yes
-
     - name: Check for local changes in repo
       command: git status --porcelain
       args:
