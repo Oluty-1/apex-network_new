@@ -23,11 +23,11 @@ variable "CONTAINER_NAME" {
 }
 
 variable "DB_URL_SECRET" {
-  default = "arn:aws:secretsmanager:us-east-2:302225372317:secret:ApexSecrets_DB_URL-IYnCpn"
+  default = "arn:aws:secretsmanager:us-east-2:302225372317:secret:ApexSecrets:DB_URL::"
 }
 
 variable "PORT_SECRET" {
-  default = "arn:aws:secretsmanager:us-east-2:302225372317:secret:ApexSecrets-tRFSbw"
+  default = "arn:aws:secretsmanager:us-east-2:302225372317:secret:ApexSecrets:PORT::"
 }
 
 variable "TASK_FAMILY" {
