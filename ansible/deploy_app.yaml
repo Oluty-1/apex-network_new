@@ -210,7 +210,7 @@
         chdir: /home/ubuntu/apex
       register: git_status
 
-    - name: Pull source code from GitHub
+    - name: Pull source code if there's changes from GitHub
       git:
         repo: 'https://github.com/Oluty-1/apex-network_new.git'
         dest: /home/ubuntu/apex
