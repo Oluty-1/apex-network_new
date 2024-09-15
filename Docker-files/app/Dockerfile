@@ -2,7 +2,7 @@
 FROM golang:1.20-alpine AS build_image
 
 # Install jq
-RUN apt-get update && apt-get install -y jq && apt-get clean
+RUN apk add --no-cache jq
 
 LABEL "Project"="Apex_Network"
 LABEL "Author"="Tejiri"
