@@ -39,14 +39,11 @@ EXPOSE 3000
 
 # Copy the entrypoint script
 COPY entrypoint.sh /app/entrypoint.sh
-RUN chmod +x entrypoint.sh
-
-# Expose the application port
-EXPOSE 3000
+RUN chmod +x /app/entrypoint.sh
 
 # Set the entrypoint
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
 
 # Command to run the application
-# CMD [ "./apex_network", "apex_network_api" ]
+CMD ["./apex_network", "apex_network_api"]
 
