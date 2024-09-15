@@ -1,6 +1,9 @@
 # Step 1: Build the Go application
 FROM golang:1.20-alpine AS build_image
 
+# Install jq
+RUN apt-get update && apt-get install -y jq && apt-get clean
+
 LABEL "Project"="Apex_Network"
 LABEL "Author"="Tejiri"
 # Set the working directory inside the container
