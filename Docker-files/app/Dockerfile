@@ -25,6 +25,9 @@ RUN go build -o /build/apex_network
 # Step 2: Create a minimal container to run the application
 FROM alpine:latest
 
+# Install jq in the final image
+RUN apk add --no-cache jq
+
 # Set a working directory in the new container
 WORKDIR /app
 
@@ -34,6 +37,16 @@ COPY --from=build_image /build/apex_network ./apex_network
 # Expose the application port
 EXPOSE 3000
 
+# Copy the entrypoint script
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+
+# Expose the application port
+EXPOSE 3000
+
+# Set the entrypoint
+ENTRYPOINT ["./entrypoint.sh"]
+
 # Command to run the application
-CMD [ "./apex_network", "apex_network_api" ]
+# CMD [ "./apex_network", "apex_network_api" ]
 
