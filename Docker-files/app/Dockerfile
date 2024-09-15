@@ -38,7 +38,7 @@ COPY --from=build_image /build/apex_network ./apex_network
 EXPOSE 3000
 
 # Copy the entrypoint script
-COPY entrypoint.sh .
+COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x entrypoint.sh
 
 # Expose the application port
