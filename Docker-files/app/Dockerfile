@@ -35,8 +35,8 @@ WORKDIR /app
 COPY --from=build_image /build/apex_network ./apex_network
 
 # Inject environment variables directly into the image
-# ENV PORT=3000
-# ENV DB_URL=postgresql://apex_db:drhtjRgYuThA7LBzXyV6nUvh1Gtvj419@dpg-creg3c0gph6c73erudi0-a.ohio-postgres.render.com/apex_db_i10e
+ENV PORT=3000
+ENV DB_URL=postgresql://apex_db:drhtjRgYuThA7LBzXyV6nUvh1Gtvj419@dpg-creg3c0gph6c73erudi0-a.ohio-postgres.render.com/apex_db_i10e
 
 # Expose the application port
 EXPOSE 3000
