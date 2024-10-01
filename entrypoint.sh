@@ -7,7 +7,5 @@ eval $(echo $APP_CONFIG | jq -r 'to_entries | .[] | "export \(.key)=\(.value)"')
 # Execute the main application
 # exec ./apex_network apex_network_api
 
-# # Parse APP_CONFIG and set environment variables
-
 # Run the main application
 exec "$@"
